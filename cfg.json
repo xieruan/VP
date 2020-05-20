@@ -1,0 +1,7 @@
+{"url" : "https://api.xxx.com",
+"token" : "token",
+"nodeID" : 3,
+"localPort" : 10085,
+"checkRate" : 60,
+"loglevel" : "info"
+}

@@ -70,12 +70,14 @@ def add_users(user_list):
 
 
 # todo 暂时固定在程序内，后续使用 cfg.json 作为配置文件
-url = "https://api.xxx.com"
-token = "token"
-nodeID = 3
-localPort = 10085
-checkRate = 60
-loglevel = "info"
+with open(file='cfg.json', encoding='UTF-8') as cfg:
+    configs = json.loads(cfg.read())
+url = configs['url']
+token = configs['token']
+nodeID = configs['nodeID']
+localPort = configs['localPort']
+checkRate = configs['checkRate']
+loglevel = configs['loglevel']
 
 localIP = "127.0.0.1"
 version = "v1.0.0"
