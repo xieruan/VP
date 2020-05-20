@@ -5,127 +5,220 @@ from v2ray.com.core.app.proxyman.command import command_pb2 as v2ray_dot_com_dot
 
 
 class HandlerServiceStub(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+        """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.AddInbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/AddInbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundResponse.FromString,
-        )
-    self.RemoveInbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/RemoveInbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundResponse.FromString,
-        )
-    self.AlterInbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/AlterInbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundResponse.FromString,
-        )
-    self.AddOutbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/AddOutbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundResponse.FromString,
-        )
-    self.RemoveOutbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/RemoveOutbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundResponse.FromString,
-        )
-    self.AlterOutbound = channel.unary_unary(
-        '/v2ray.core.app.proxyman.command.HandlerService/AlterOutbound',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundResponse.FromString,
-        )
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.AddInbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/AddInbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundResponse.FromString,
+                )
+        self.RemoveInbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/RemoveInbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundResponse.FromString,
+                )
+        self.AlterInbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/AlterInbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundResponse.FromString,
+                )
+        self.AddOutbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/AddOutbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundResponse.FromString,
+                )
+        self.RemoveOutbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/RemoveOutbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundResponse.FromString,
+                )
+        self.AlterOutbound = channel.unary_unary(
+                '/v2ray.core.app.proxyman.command.HandlerService/AlterOutbound',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundResponse.FromString,
+                )
 
 
 class HandlerServiceServicer(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def AddInbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def AddInbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def RemoveInbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def RemoveInbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def AlterInbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def AlterInbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def AddOutbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def AddOutbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def RemoveOutbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def RemoveOutbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def AlterOutbound(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def AlterOutbound(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_HandlerServiceServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'AddInbound': grpc.unary_unary_rpc_method_handler(
-          servicer.AddInbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundResponse.SerializeToString,
-      ),
-      'RemoveInbound': grpc.unary_unary_rpc_method_handler(
-          servicer.RemoveInbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundResponse.SerializeToString,
-      ),
-      'AlterInbound': grpc.unary_unary_rpc_method_handler(
-          servicer.AlterInbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundResponse.SerializeToString,
-      ),
-      'AddOutbound': grpc.unary_unary_rpc_method_handler(
-          servicer.AddOutbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundResponse.SerializeToString,
-      ),
-      'RemoveOutbound': grpc.unary_unary_rpc_method_handler(
-          servicer.RemoveOutbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundResponse.SerializeToString,
-      ),
-      'AlterOutbound': grpc.unary_unary_rpc_method_handler(
-          servicer.AlterOutbound,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'v2ray.core.app.proxyman.command.HandlerService', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+    rpc_method_handlers = {
+            'AddInbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddInbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundResponse.SerializeToString,
+            ),
+            'RemoveInbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveInbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundResponse.SerializeToString,
+            ),
+            'AlterInbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.AlterInbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundResponse.SerializeToString,
+            ),
+            'AddOutbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddOutbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundResponse.SerializeToString,
+            ),
+            'RemoveOutbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveOutbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundResponse.SerializeToString,
+            ),
+            'AlterOutbound': grpc.unary_unary_rpc_method_handler(
+                    servicer.AlterOutbound,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'v2ray.core.app.proxyman.command.HandlerService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class HandlerService(object):
+    """Missing associated documentation comment in .proto file"""
+
+    @staticmethod
+    def AddInbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/AddInbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddInboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveInbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/RemoveInbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveInboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AlterInbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/AlterInbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterInboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AddOutbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/AddOutbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AddOutboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveOutbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/RemoveOutbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.RemoveOutboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AlterOutbound(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.proxyman.command.HandlerService/AlterOutbound',
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_proxyman_dot_command_dot_command__pb2.AlterOutboundResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)

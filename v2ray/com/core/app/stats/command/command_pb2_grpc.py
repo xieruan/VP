@@ -5,59 +5,124 @@ from v2ray.com.core.app.stats.command import command_pb2 as v2ray_dot_com_dot_co
 
 
 class StatsServiceStub(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+        """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.GetStats = channel.unary_unary(
-        '/v2ray.core.app.stats.command.StatsService/GetStats',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsResponse.FromString,
-        )
-    self.QueryStats = channel.unary_unary(
-        '/v2ray.core.app.stats.command.StatsService/QueryStats',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsResponse.FromString,
-        )
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetStats = channel.unary_unary(
+                '/v2ray.core.app.stats.command.StatsService/GetStats',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsResponse.FromString,
+                )
+        self.QueryStats = channel.unary_unary(
+                '/v2ray.core.app.stats.command.StatsService/QueryStats',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsResponse.FromString,
+                )
+        self.GetSysStats = channel.unary_unary(
+                '/v2ray.core.app.stats.command.StatsService/GetSysStats',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsResponse.FromString,
+                )
 
 
 class StatsServiceServicer(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def GetStats(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def GetStats(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-  def QueryStats(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def QueryStats(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSysStats(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_StatsServiceServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'GetStats': grpc.unary_unary_rpc_method_handler(
-          servicer.GetStats,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsResponse.SerializeToString,
-      ),
-      'QueryStats': grpc.unary_unary_rpc_method_handler(
-          servicer.QueryStats,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'v2ray.core.app.stats.command.StatsService', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+    rpc_method_handlers = {
+            'GetStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStats,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsResponse.SerializeToString,
+            ),
+            'QueryStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.QueryStats,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsResponse.SerializeToString,
+            ),
+            'GetSysStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSysStats,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'v2ray.core.app.stats.command.StatsService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class StatsService(object):
+    """Missing associated documentation comment in .proto file"""
+
+    @staticmethod
+    def GetStats(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.stats.command.StatsService/GetStats',
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.GetStatsResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def QueryStats(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.stats.command.StatsService/QueryStats',
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.QueryStatsResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetSysStats(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.stats.command.StatsService/GetSysStats',
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_stats_dot_command_dot_command__pb2.SysStatsResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)

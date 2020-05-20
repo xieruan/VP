@@ -1,20 +1,21 @@
 import os
 import sys
-sys.path.append(os.path.dirname(__file__))
 import grpc
-from grpc._channel import _Rendezvous
-from .errors import *
-from .v2ray.com.core.common.net import port_pb2, address_pb2
-from .v2ray.com.core import config_pb2 as core_config_pb2
-from .v2ray.com.core.proxy.vmess import account_pb2
-from .v2ray.com.core.proxy.vmess.inbound import config_pb2 as vmess_inbound_config_pb2
-from .v2ray.com.core.common.protocol import user_pb2
-from .v2ray.com.core.common.serial import typed_message_pb2
-from .v2ray.com.core.app.proxyman import config_pb2 as proxyman_config_pb2
-from .v2ray.com.core.app.proxyman.command import command_pb2
-from .v2ray.com.core.app.proxyman.command import command_pb2_grpc
-from .v2ray.com.core.app.stats.command import command_pb2 as stats_command_pb2
-from .v2ray.com.core.app.stats.command import command_pb2_grpc as stats_command_pb2_grpc
+from grpc._channel import _InactiveRpcError
+from errors import *
+from v2ray.com.core.common.net import port_pb2, address_pb2
+from v2ray.com.core import config_pb2 as core_config_pb2
+from v2ray.com.core.proxy.vmess import account_pb2
+from v2ray.com.core.proxy.vmess.inbound import config_pb2 as vmess_inbound_config_pb2
+from v2ray.com.core.common.protocol import user_pb2
+from v2ray.com.core.common.serial import typed_message_pb2
+from v2ray.com.core.app.proxyman import config_pb2 as proxyman_config_pb2
+from v2ray.com.core.app.proxyman.command import command_pb2
+from v2ray.com.core.app.proxyman.command import command_pb2_grpc
+from v2ray.com.core.app.stats.command import command_pb2 as stats_command_pb2
+from v2ray.com.core.app.stats.command import command_pb2_grpc as stats_command_pb2_grpc
+
+sys.path.append(os.path.dirname(__file__))
 
 
 def to_typed_message(message):
@@ -117,7 +118,7 @@ class Client(object):
                 ))
             ))
             return user_id
-        except _Rendezvous as e:
+        except _InactiveRpcError as e:
             details = e.details()
             if details.endswith(f"User {email} already exists."):
                 raise EmailExistsError(details, email)
@@ -142,7 +143,7 @@ class Client(object):
                     email=email
                 ))
             ))
-        except _Rendezvous as e:
+        except _InactiveRpcError as e:
             details = e.details()
             if details.endswith(f"User {email} not found."):
                 raise EmailNotFoundError(details, email)
@@ -183,7 +184,7 @@ class Client(object):
                     proxy_settings=proxy.message
                 )
             ))
-        except _Rendezvous as e:
+        except _InactiveRpcError as e:
             details = e.details()
             if details.endswith("address already in use"):
                 raise AddressAlreadyInUseError(details, port)
@@ -197,9 +198,41 @@ class Client(object):
             stub.RemoveInbound(command_pb2.RemoveInboundRequest(
                 tag=tag
             ))
-        except _Rendezvous as e:
+        except _InactiveRpcError as e:
             details = e.details()
             if details == 'not enough information for making a decision':
                 raise InboundNotFoundError(details, tag)
             else:
                 raise V2RayError(details)
+
+    def get_sys_traffic_downlink(self, tag, reset=False):
+        """
+        获取用户下行流量，单位：字节
+        若该tag未产生流量或tag有误，返回None
+        :param tag: 此传入连接的标识
+        :param reset: 是否重置计数器
+        """
+        stub = stats_command_pb2_grpc.StatsServiceStub(self._channel)
+        try:
+            return stub.GetStats(stats_command_pb2.GetStatsRequest(
+                name=f"inbound>>>{tag}>>>traffic>>>downlink",
+                reset=reset
+            )).stat.value
+        except grpc.RpcError:
+            return None
+
+    def get_sys_traffic_uplink(self, tag, reset=False):
+        """
+        获取用户上行流量，单位：字节
+        若该tag未产生流量或tag有误，返回None
+        :param tag: 此传入连接的标识
+        :param reset: 是否重置计数器
+        """
+        stub = stats_command_pb2_grpc.StatsServiceStub(self._channel)
+        try:
+            return stub.GetStats(stats_command_pb2.GetStatsRequest(
+                name=f"inbound>>>{tag}>>>traffic>>>uplink",
+                reset=reset
+            )).stat.value
+        except grpc.RpcError:
+            return None

@@ -5,42 +5,60 @@ from v2ray.com.core.app.log.command import config_pb2 as v2ray_dot_com_dot_core_
 
 
 class LoggerServiceStub(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+        """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.RestartLogger = channel.unary_unary(
-        '/v2ray.core.app.log.command.LoggerService/RestartLogger',
-        request_serializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerRequest.SerializeToString,
-        response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerResponse.FromString,
-        )
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.RestartLogger = channel.unary_unary(
+                '/v2ray.core.app.log.command.LoggerService/RestartLogger',
+                request_serializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerRequest.SerializeToString,
+                response_deserializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerResponse.FromString,
+                )
 
 
 class LoggerServiceServicer(object):
-  # missing associated documentation comment in .proto file
-  pass
+    """Missing associated documentation comment in .proto file"""
 
-  def RestartLogger(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    def RestartLogger(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_LoggerServiceServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'RestartLogger': grpc.unary_unary_rpc_method_handler(
-          servicer.RestartLogger,
-          request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerRequest.FromString,
-          response_serializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'v2ray.core.app.log.command.LoggerService', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+    rpc_method_handlers = {
+            'RestartLogger': grpc.unary_unary_rpc_method_handler(
+                    servicer.RestartLogger,
+                    request_deserializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerRequest.FromString,
+                    response_serializer=v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'v2ray.core.app.log.command.LoggerService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class LoggerService(object):
+    """Missing associated documentation comment in .proto file"""
+
+    @staticmethod
+    def RestartLogger(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/v2ray.core.app.log.command.LoggerService/RestartLogger',
+            v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerRequest.SerializeToString,
+            v2ray_dot_com_dot_core_dot_app_dot_log_dot_command_dot_config__pb2.RestartLoggerResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
