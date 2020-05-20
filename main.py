@@ -69,7 +69,7 @@ def add_users(user_list):
     return
 
 
-# todo 暂时固定在程序内，后续使用 cfg.json 作为配置文件
+# 使用 cfg.json 作为配置文件
 with open(file='cfg.json', encoding='UTF-8') as cfg:
     configs = json.loads(cfg.read())
 url = configs['url']
