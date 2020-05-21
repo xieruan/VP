@@ -11,7 +11,7 @@
 2. 安装依赖
 
    ```bash
-   pip3 install grpcio
+   pip3 install grpcio google-api-python-client
    ```
 
 
