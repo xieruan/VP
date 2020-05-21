@@ -1,4 +1,4 @@
-## V2Ray-API
+## V2Ray Plugin For V2Board
 
 ### 安装
 
