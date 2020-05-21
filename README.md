@@ -17,13 +17,19 @@
 
 ### 使用
 
+1. 增加执行权限
+
    ```bash
    chmod +x main.py
    chmod +x v2ray -R
    ```
    
-   修改cfg.json中的内容
-   
+2. 修改cfg.json中的内容
+    ```bash
+   vi cfg.json
+    ```
+
+3. 运行程序
    ```bash
    ./main.py
    ```
