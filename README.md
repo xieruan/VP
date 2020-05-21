@@ -17,11 +17,13 @@
 
 ### 使用
 
-   ```
+   ```bash
    chmod +x main.py
    chmod +x v2ray -R
    ```
+   
    修改cfg.json中的内容
-   ```
+   
+   ```bash
    ./main.py
    ```
