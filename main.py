@@ -44,7 +44,7 @@ def update_config(in_url, local_port, node_id, access_token):
     while n < 3:
         try:
             config = requests.get(
-                '{0}/api/v1/server/poseidon/config?local_port={1}&node_id={2}&token={3}'.format(
+                '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.format(
                     in_url, local_port, node_id, access_token))
             break
         except requests.exceptions.ConnectionError as f:
@@ -114,7 +114,7 @@ while True:
     i = 0
     while i < 3:
         try:
-            users = requests.get('{0}/api/v1/server/poseidon/user?node_id={1}&token={2}'.format(url, nodeID, token))
+            users = requests.get('{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(url, nodeID, token))
             break
         except requests.exceptions.ConnectionError as e:
             logging.warning(e)
@@ -183,7 +183,7 @@ while True:
         if u or d:
             traffic.append({'user_id': data['id'], 'u': u, 'd': d})
     if traffic:
-        post = requests.post('{0}/api/v1/server/poseidon/submit?node_id={1}&token={2}'.format(url, nodeID, token),
+        post = requests.post('{0}/api/v1/server/deepbwork/submit?node_id={1}&token={2}'.format(url, nodeID, token),
                              json=traffic)
         if post.status_code == 200:
             post_json = post.json()
