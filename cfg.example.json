@@ -3,5 +3,5 @@
 "nodeID" : 3,
 "localPort" : 10085,
 "checkRate" : 60,
-"loglevel" : "info" // critical, error, warning, info, debug
+"loglevel" : "info"
 }

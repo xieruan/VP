@@ -32,3 +32,7 @@
    ```bash
    ./main.py
    ```
+4. 日志等级
+    ```bash
+   critical, error, warning, info, debug
+    ```

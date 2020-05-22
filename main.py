@@ -5,7 +5,7 @@ import time
 from client import Client
 import logging
 import subprocess
-import json
+import json,re
 import os
 
 
@@ -21,18 +21,6 @@ def get_pid(proc):
             if proc_id not in pid_list:
                 pid_list.append(int(proc_id.decode()))
         return pid_list
-    else:
-        return None
-
-
-def format_traffic(integer):
-    if integer:
-        if integer <= 1024:
-            return str(integer) + " B"
-        elif integer <= 1024 * 1024:
-            return str('%.2f' % (integer / 1024)) + " KB"
-        else:
-            return str('%.2f' % (integer / 1024 ** 2)) + " MB"
     else:
         return None
 
@@ -89,9 +77,10 @@ def get_user_info(in_url, node_id, access_token):
         logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
         return None
 
+
 # 使用 cfg.json 作为配置文件
 with open(file='cfg.json', encoding='UTF-8') as cfg:
-    configs = dict(json.loads(cfg.read()))
+    configs = json.loads(cfg.read())
 url = configs['url']
 token = configs['token']
 nodeID = configs['nodeID']
