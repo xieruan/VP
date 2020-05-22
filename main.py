@@ -51,11 +51,8 @@ def update_config(in_url, local_port, node_id, access_token):
             logging.warning(f)
             time.sleep(5)
             n += 1
-    config_json = config.json()
-    if config:
-        return config_json['msg'], config_json['data']
-    else:
-        return config_json['msg'], None
+    config_json = json.loads(config.text)
+    return config_json
 
 
 def add_users(user_list):
@@ -69,9 +66,32 @@ def add_users(user_list):
     return
 
 
+def get_user_info(in_url, node_id, access_token):
+    users = None
+    i = 0
+    while i < 3:
+        try:
+            users = requests.get('{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(in_url,
+                                                                                                 node_id, access_token))
+            break
+        except requests.exceptions.ConnectionError as e:
+            logging.warning(e)
+            i += 1
+            time.sleep(5)
+    if users.status_code == 200:
+        users_info = users.json()
+        if users_info['msg'] != "ok":
+            logging.fatal(users_info['msg'])
+            return None
+        else:
+            return users_info
+    else:
+        logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
+        return None
+
 # 使用 cfg.json 作为配置文件
 with open(file='cfg.json', encoding='UTF-8') as cfg:
-    configs = json.loads(cfg.read())
+    configs = dict(json.loads(cfg.read()))
 url = configs['url']
 token = configs['token']
 nodeID = configs['nodeID']
@@ -93,42 +113,22 @@ if v2rayProcess:
     time.sleep(3)
 # 获取远程配置信息
 fetch = update_config(url, localPort, nodeID, token)
-rc = None
-if fetch[0] == "ok":
-    logging.info("Starting v2ray service")
-    get_config = json.dumps(fetch[1])
-    with open('config.json', 'w', encoding='UTF-8') as file:
-        file.write(get_config)
-    rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + "/config.json"])
-    time.sleep(5)
-else:
-    logging.error(fetch[0] + ", Please check your WebAPI values is correct.")
-    exit()
+logging.info("Starting v2ray service")
+with open('config.json', 'w', encoding='UTF-8') as file:
+    file.write(json.dumps(fetch))
+rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + "/config.json"])
+time.sleep(5)
+
+# logging.error(fetch[0] + ", Please check your WebAPI values is correct.")
+# exit()
 
 # 下面进入循环
 localUserInfo = []
 while True:
     # 取得用户信息
-    conn = Client(localIP, localPort)
-    users = None
-    i = 0
-    while i < 3:
-        try:
-            users = requests.get('{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(url, nodeID, token))
-            break
-        except requests.exceptions.ConnectionError as e:
-            logging.warning(e)
-            i += 1
-            time.sleep(5)
-    users_json = None
-    if users.status_code == 200:
-        users_json = users.json()
-        if users_json['msg'] != "ok":
-            logging.fatal(users_json['msg'])
-    else:
-        logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
+    users_json = get_user_info(url, nodeID, token)
     # 比较本地和远程配置文件
-    remote_config = update_config(url, localPort, nodeID, token)[1]
+    remote_config = update_config(url, localPort, nodeID, token)
     with open('config.json', 'r', encoding='UTF-8') as file:
         cur_config = str(json.loads(file.read()))
     if str(remote_config) != cur_config:
@@ -146,6 +146,7 @@ while True:
         add_users(users_json['data'])
 
     # 开始用户信息操作
+    conn = Client(localIP, localPort)
     addUserList = []
     delUserList = []
     userInfo = []
