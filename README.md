@@ -25,6 +25,7 @@
    
 2. 修改cfg.json中的内容
     ```bash
+   cp cfg.example.json cfg.json
    vi cfg.json
     ```
 
