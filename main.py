@@ -41,8 +41,10 @@ def get_config(urls):
     if config and config.status_code == 200:
         config_dict = json.loads(config.text)
         return config_dict
-    else:
+    elif config.status_code < 500:
         logging.error(json.loads(config.text)['message'])
+    else:
+        logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
         return None
 
 
