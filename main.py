@@ -23,7 +23,9 @@ def kill_proc(proc):
 
 def handle(sig, frame):
     kill_proc('v2ray')
-    exit()
+    exit(sig)
+    return frame
+
 
 
 def get_config(urls):
@@ -43,8 +45,9 @@ def get_config(urls):
         return config_dict
     elif config.status_code < 500:
         logging.error(json.loads(config.text)['message'])
+        return None
     else:
-        logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
+        logging.error("Cannot sync config.json with V2Board. Please check your web server's networking.")
         return None
 
 
@@ -54,7 +57,7 @@ def add_users(user_list):
         conn.add_user('proxy', UUID(user['uuid']).hex, user['email'], user['level'],
                       user['alter_id'])
         localUserInfo.append(usr)
-        logging.info(title + "Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
+        logging.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
                                                                                  usr['email']))
     return
 
@@ -94,13 +97,12 @@ loglevel = configs['loglevel']
 # 定义静态变量
 localIP = "127.0.0.1"
 version = "v1.0.0"
-title = "V2Board Plugin: "
 loglevelDict = {'CRITICAL': 50, 'ERROR': 40, 'WARNING': 30, 'INFO': 20, 'DEBUG': 10, }
 
 logging.basicConfig(level=loglevelDict[loglevel.upper()],
-                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    format='%(asctime)s [%(levelname)s] V2Board Plugin: %(message)s',
                     datefmt='%Y/%m/%d %H:%M:%S')
-print(title + "Welcome to use the V2Board Plugin %s by Senis" % version)
+print("V2Board Plugin %s by Senis" % version)
 
 # 定义api url
 getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.\
@@ -114,12 +116,14 @@ signal.signal(1, handle)
 # 获取远程配置信息
 fetch = get_config(getConfig_Url)
 if not fetch:
+    logging.critical('Initial config.json failure, Aborting start.')
     exit()
 # 启动V2Ray服务
 logging.info("Starting v2ray service")
+getCwd = os.path.abspath(os.path.dirname(__file__))
 with open('config.json', 'w', encoding='UTF-8') as file:
     file.write(json.dumps(fetch))
-rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + "/config.json"])
+rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + "/config.json"])
 time.sleep(5)
 
 # 下面进入循环
@@ -130,19 +134,20 @@ while True:
     users_json = get_user_info(getUserInfo_Url)
     # 比较本地和远程配置文件
     remote_config = get_config(getConfig_Url)
-    with open('config.json', 'r', encoding='UTF-8') as file:
-        current_config = str(json.loads(file.read()))
-    if str(remote_config) != current_config:
-        logging.info("The config.json have been changed. Updating the local config.json.")
-        rc.kill()
-        with open('config.json', 'w', encoding='UTF-8') as file:
-            file.write(json.dumps(remote_config))
-        rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + '/config.json'])
-        time.sleep(5)
-        add_users(users_json['data'])
+    if remote_config:
+        with open('config.json', 'r', encoding='UTF-8') as file:
+            current_config = str(json.loads(file.read()))
+        if str(remote_config) != current_config:
+            logging.info("The config.json have been changed. Updating the local config.json.")
+            rc.kill()
+            with open('config.json', 'w', encoding='UTF-8') as file:
+                file.write(json.dumps(remote_config))
+            rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + '/config.json'])
+            time.sleep(5)
+            add_users(users_json['data'])
     if rc.poll() is not None:
-        logging.warning("V2ray terminated abnormally, Now restarting")
-        rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + '/config.json'])
+        logging.warning("V2ray terminated abnormally, Now restarting.")
+        rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + '/config.json'])
         time.sleep(5)
         add_users(users_json['data'])
 
@@ -171,7 +176,7 @@ while True:
             v2ray_user = data['v2ray_user']
             conn.remove_user('proxy', v2ray_user['email'])
             localUserInfo.remove(data)
-            logging.info(title + "Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
+            logging.info("Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
                                                                                        data['email']))
         add_users(addUserList)
 
@@ -194,6 +199,6 @@ while True:
             else:
                 logging.error(post_json['msg'])
         else:
-            logging.fatal(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
-    logging.info(title + "+ {0} users, - {1} users, V2Ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
+            logging.error("Cannot sync traffic information with V2Board. Please check your web server's networking.")
+    logging.info("+ {0} users, - {1} users, V2Ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
     time.sleep(checkRate)
