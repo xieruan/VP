@@ -86,7 +86,7 @@ def get_user_info(urls):
 
 # 使用 cfg.json 作为配置文件
 getCwd = os.path.abspath(os.path.dirname(__file__))
-with open(getCwd + 'cfg.json', encoding='UTF-8') as cfg:
+with open(getCwd + '/cfg.json', encoding='UTF-8') as cfg:
     configs = json.loads(cfg.read())
 url = configs['url']
 token = configs['token']
@@ -121,7 +121,7 @@ if not fetch:
     exit()
 # 启动V2Ray服务
 logging.info("Starting v2ray service")
-with open(getCwd + 'config.json', 'w', encoding='UTF-8') as file:
+with open(getCwd + '/config.json', 'w', encoding='UTF-8') as file:
     file.write(json.dumps(fetch))
 rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + "/config.json"])
 time.sleep(5)
@@ -135,12 +135,12 @@ while True:
     # 比较本地和远程配置文件
     remote_config = get_config(getConfig_Url)
     if remote_config:
-        with open(getCwd + 'config.json', 'r', encoding='UTF-8') as file:
+        with open(getCwd + '/config.json', 'r', encoding='UTF-8') as file:
             current_config = str(json.loads(file.read()))
         if str(remote_config) != current_config:
             logging.info("The config.json have been changed. Updating the local config.json.")
             rc.kill()
-            with open(getCwd + 'config.json', 'w', encoding='UTF-8') as file:
+            with open(getCwd + '/config.json', 'w', encoding='UTF-8') as file:
                 file.write(json.dumps(remote_config))
             rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + '/config.json'])
             time.sleep(5)
