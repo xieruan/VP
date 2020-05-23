@@ -113,7 +113,7 @@ signal.signal(1, handle)
 # 获取远程配置信息
 fetch = get_config(getConfig_Url)
 if not fetch:
-    logging.critical('Initial config.json failure, Aborting start.')
+    logging.critical('Initial loading config.json failure, Aborting start.')
     exit()
 # 启动V2Ray服务
 logging.info("Starting v2ray service")
@@ -195,6 +195,6 @@ while True:
             else:
                 logging.error(post_json['msg'])
         else:
-            logging.error("Cannot sync traffic information with V2Board. Please check your web server's networking.")
+            logging.error("Cannot report user traffic info to V2Board. Please check your web server's networking.")
     logging.info("+ {0} users, - {1} users, V2Ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
     time.sleep(checkRate)
