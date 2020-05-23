@@ -26,8 +26,6 @@ def handle(sig, frame):
     exit(sig)
     return frame
 
-
-
 def get_config(urls):
     # config info
     config = None
@@ -50,7 +48,6 @@ def get_config(urls):
         logging.error("Cannot sync config.json with V2Board. Please check your web server's networking.")
         return None
 
-
 def add_users(user_list):
     for usr in user_list:
         user = usr['v2ray_user']
@@ -60,7 +57,6 @@ def add_users(user_list):
         logging.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
                                                                                  usr['email']))
     return
-
 
 def get_user_info(urls):
     users = None
