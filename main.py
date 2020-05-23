@@ -99,7 +99,7 @@ loglevelDict = {'CRITICAL': 50, 'ERROR': 40, 'WARNING': 30, 'INFO': 20, 'DEBUG':
 logging.basicConfig(level=loglevelDict[loglevel.upper()],
                     format='%(asctime)s [%(levelname)s] V2Board Plugin: %(message)s',
                     datefmt='%Y/%m/%d %H:%M:%S')
-print("V2Board Plugin %s by Senis" % version)
+print("V2Board Plugin %s Powered by Senis" % version)
 
 # 定义api url
 getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.\
