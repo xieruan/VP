@@ -45,7 +45,7 @@ def get_config(urls):
         logging.error(json.loads(config.text)['message'])
         return None
     else:
-        logging.error("Cannot sync config.json with V2Board. Please check your web server's networking.")
+        logging.error("Fetching remote config.json failure. Please check your web server's networking.")
         return None
 
 def add_users(user_list):
