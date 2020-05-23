@@ -5,13 +5,12 @@ import time
 from client import Client
 import logging
 import subprocess
-import json,re
+import json
 import os
+import signal
 
-
-def get_pid(proc):
+def kill_proc(proc):
     commands = "ps aux| grep '%s'|grep -v grep " % proc
-    logging.info(commands)
     out = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE)
     infos = out.stdout.read().splitlines()
     pid_list = []
@@ -19,28 +18,32 @@ def get_pid(proc):
         for k in infos:
             proc_id = k.split()[1]
             if proc_id not in pid_list:
-                pid_list.append(int(proc_id.decode()))
-        return pid_list
-    else:
-        return None
+                os.kill(int(proc_id.decode()), 1)
+    time.sleep(3)
+
+def handle(sig, frame):
+    kill_proc('v2ray')
+    exit()
 
 
-def update_config(in_url, local_port, node_id, access_token):
+def get_config(urls):
     # config info
     config = None
     n = 0
     while n < 3:
         try:
-            config = requests.get(
-                '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.format(
-                    in_url, local_port, node_id, access_token))
+            config = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as f:
-            logging.warning(f)
+            logging.warning(f.args[0].reason)
             time.sleep(5)
             n += 1
-    config_json = json.loads(config.text)
-    return config_json
+    if config and config.status_code == 200:
+        config_dict = json.loads(config.text)
+        return config_dict
+    else:
+        logging.error(json.loads(config.text)['message'])
+        return None
 
 
 def add_users(user_list):
@@ -54,16 +57,15 @@ def add_users(user_list):
     return
 
 
-def get_user_info(in_url, node_id, access_token):
+def get_user_info(urls):
     users = None
     i = 0
     while i < 3:
         try:
-            users = requests.get('{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(in_url,
-                                                                                                 node_id, access_token))
+            users = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as e:
-            logging.warning(e)
+            logging.warning(e.args[0].reason)
             i += 1
             time.sleep(5)
     if users.status_code == 200:
@@ -74,7 +76,6 @@ def get_user_info(in_url, node_id, access_token):
         else:
             return users_info
     else:
-        logging.error(title + "Cannot connecting V2Board WebAPI. Please check your web server.")
         return None
 
 
@@ -88,39 +89,48 @@ localPort = configs['localPort']
 checkRate = configs['checkRate']
 loglevel = configs['loglevel']
 
+# 定义静态变量
 localIP = "127.0.0.1"
 version = "v1.0.0"
 title = "V2Board Plugin: "
 loglevelDict = {'CRITICAL': 50, 'ERROR': 40, 'WARNING': 30, 'INFO': 20, 'DEBUG': 10, }
-logging.basicConfig(level=loglevelDict[loglevel.upper()])
+
+logging.basicConfig(level=loglevelDict[loglevel.upper()],
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y/%m/%d %H:%M:%S')
 print(title + "Welcome to use the V2Board Plugin %s by Senis" % version)
-# 清理之前的进程
-v2rayProcess = get_pid("v2ray")
-if v2rayProcess:
-    for v2rayProc in v2rayProcess:
-        os.kill(v2rayProc, 1)
-    time.sleep(3)
+
+# 定义api url
+getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.\
+    format(url, localPort, nodeID, token)
+getUserInfo_Url = '{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(url, nodeID, token)
+submit_Url = '{0}/api/v1/server/deepbwork/submit?node_id={1}&token={2}'.format(url, nodeID, token)
+# 清理残余v2ray进程
+kill_proc('v2ray')
+signal.signal(2, handle)
+signal.signal(1, handle)
 # 获取远程配置信息
-fetch = update_config(url, localPort, nodeID, token)
+fetch = get_config(getConfig_Url)
+if not fetch:
+    exit()
+# 启动V2Ray服务
 logging.info("Starting v2ray service")
 with open('config.json', 'w', encoding='UTF-8') as file:
     file.write(json.dumps(fetch))
 rc = subprocess.Popen([os.getcwd() + "/v2ray/v2ray", "-config", os.getcwd() + "/config.json"])
 time.sleep(5)
 
-# logging.error(fetch[0] + ", Please check your WebAPI values is correct.")
-# exit()
-
 # 下面进入循环
 localUserInfo = []
 while True:
+    conn = Client(localIP, localPort)
     # 取得用户信息
-    users_json = get_user_info(url, nodeID, token)
+    users_json = get_user_info(getUserInfo_Url)
     # 比较本地和远程配置文件
-    remote_config = update_config(url, localPort, nodeID, token)
+    remote_config = get_config(getConfig_Url)
     with open('config.json', 'r', encoding='UTF-8') as file:
-        cur_config = str(json.loads(file.read()))
-    if str(remote_config) != cur_config:
+        current_config = str(json.loads(file.read()))
+    if str(remote_config) != current_config:
         logging.info("The config.json have been changed. Updating the local config.json.")
         rc.kill()
         with open('config.json', 'w', encoding='UTF-8') as file:
@@ -135,7 +145,6 @@ while True:
         add_users(users_json['data'])
 
     # 开始用户信息操作
-    conn = Client(localIP, localPort)
     addUserList = []
     delUserList = []
     userInfo = []
@@ -173,8 +182,7 @@ while True:
         if u or d:
             traffic.append({'user_id': data['id'], 'u': u, 'd': d})
     if traffic:
-        post = requests.post('{0}/api/v1/server/deepbwork/submit?node_id={1}&token={2}'.format(url, nodeID, token),
-                             json=traffic)
+        post = requests.post(submit_Url, json=traffic)
         if post.status_code == 200:
             post_json = post.json()
             if post_json['msg'] == 'ok':
