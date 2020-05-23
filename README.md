@@ -37,3 +37,7 @@
     ```bash
    critical, error, warning, info, debug
     ```
+5. 更新
+    ```bash
+    bash update.sh
+    ```
