@@ -43,7 +43,7 @@ def get_config(urls):
     if config and config.status_code == 200:
         config_dict = json.loads(config.text)
         return config_dict
-    elif config.status_code < 500:
+    elif config.status_code <= 500:
         logging.error(json.loads(config.text)['message'])
         return None
     else:
