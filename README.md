@@ -41,3 +41,15 @@
     ```bash
     bash update.sh
     ```
+    
+    
+### 其他
+
+1. 审计
+
+   直接面板添加，如何使用参看v2board官方wiki。
+
+2.流量控制
+
+   内置的没有直接系统设置的好用，具体资料参考
+   https://github.com/ForgotFun/QosDocs
