@@ -47,10 +47,10 @@
 
 1. 审计
 
-   直接面板添加，如何使用参考v2board及v2ray官方wiki。
+   直接面板添加，参考v2board及v2ray官方wiki。
 
 
 2. 流量控制
 
-   内置的没有直接系统设置的好用，具体资料参考
+   参考
    https://github.com/ForgotFun/QosDocs
