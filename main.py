@@ -1,13 +1,16 @@
 #!/usr/bin/python3
-from uuid import UUID
-import requests
-import time
-from client import Client
-import logging
-import subprocess
 import json
+import logging
 import os
 import signal
+import subprocess
+import time
+from uuid import UUID
+
+import requests
+
+from client import Client
+
 
 def kill_proc(proc):
     commands = "ps aux| grep '%s'|grep -v grep " % proc
@@ -21,10 +24,12 @@ def kill_proc(proc):
                 os.kill(int(proc_id.decode()), 1)
     time.sleep(3)
 
+
 def handle(sig, frame):
     kill_proc('v2ray')
     exit(sig)
     return frame
+
 
 def get_config(urls):
     # config info
@@ -48,6 +53,7 @@ def get_config(urls):
         logging.error("Fetching remote config.json failure. Please check your web server's networking.")
         return None
 
+
 def add_users(user_list):
     for usr in user_list:
         user = usr['v2ray_user']
@@ -55,8 +61,9 @@ def add_users(user_list):
                       user['alter_id'])
         localUserInfo.append(usr)
         logging.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
-                                                                                 usr['email']))
+                                                                         usr['email']))
     return
+
 
 def get_user_info(urls):
     users = None
@@ -102,7 +109,7 @@ logging.basicConfig(level=loglevelDict[loglevel.upper()],
 print("V2Board Plugin %s Powered by Senis" % version)
 
 # 定义api url
-getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'.\
+getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'. \
     format(url, localPort, nodeID, token)
 getUserInfo_Url = '{0}/api/v1/server/deepbwork/user?node_id={1}&token={2}'.format(url, nodeID, token)
 submit_Url = '{0}/api/v1/server/deepbwork/submit?node_id={1}&token={2}'.format(url, nodeID, token)
@@ -173,7 +180,7 @@ while True:
             conn.remove_user('proxy', v2ray_user['email'])
             localUserInfo.remove(data)
             logging.info("Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
-                                                                                       data['email']))
+                                                                               data['email']))
         add_users(addUserList)
 
     # 统计用户流量信息
