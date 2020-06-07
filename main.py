@@ -102,7 +102,7 @@ loglevel = str(configs['loglevel']).upper()
 localIP = "127.0.0.1"
 version = "v1.0.1"
 logger_format = "{time:YYYY-MM-DD HH:mm:ss} {level} v2board Plugin: {message}"
-logger.add(getCwd + '/logs/run-{time:YYYY-MM-DD}.log', format=logger_format,
+logger.add(getCwd + '/logs/logs-{time:YYYY-MM-DD}.log', format=logger_format,
            level=loglevel, retention='15 days', rotation='50 MB', compression='zip')
 print("V2Board Plugin %s Powered by Senis" % version)
 
