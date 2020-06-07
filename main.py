@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import json
-import logging
 import os
 import signal
 import subprocess
@@ -8,6 +7,7 @@ import time
 from uuid import UUID
 
 import requests
+from loguru import logger
 
 from client import Client
 
@@ -40,17 +40,17 @@ def get_config(urls):
             config = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as f:
-            logging.warning(f.args[0].reason)
+            logger.warning(f.args[0].reason)
             time.sleep(5)
             n += 1
     if config and config.status_code == 200:
         config_dict = json.loads(config.text)
         return config_dict
     elif config.status_code <= 500:
-        logging.error(json.loads(config.text)['message'])
+        logger.error(json.loads(config.text)['message'])
         return None
     else:
-        logging.error("Fetching remote config.json failure. Please check your web server's networking.")
+        logger.error("Fetching remote config.json failure. Please check your web server's networking.")
         return None
 
 
@@ -60,8 +60,8 @@ def add_users(user_list):
         conn.add_user('proxy', UUID(user['uuid']).hex, user['email'], user['level'],
                       user['alter_id'])
         localUserInfo.append(usr)
-        logging.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
-                                                                         usr['email']))
+        logger.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
+                                                                        usr['email']))
     return
 
 
@@ -73,13 +73,13 @@ def get_user_info(urls):
             users = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as e:
-            logging.warning(e.args[0].reason)
+            logger.warning(e.args[0].reason)
             i += 1
             time.sleep(5)
     if users.status_code == 200:
         users_info = users.json()
         if users_info['msg'] != "ok":
-            logging.fatal(users_info['msg'])
+            logger.critical(users_info['msg'])
             return None
         else:
             return users_info
@@ -96,16 +96,14 @@ token = configs['token']
 nodeID = configs['nodeID']
 localPort = configs['localPort']
 checkRate = configs['checkRate']
-loglevel = configs['loglevel']
+loglevel = str(configs['loglevel']).upper()
 
 # 定义静态变量
 localIP = "127.0.0.1"
-version = "v1.0.0"
-loglevelDict = {'CRITICAL': 50, 'ERROR': 40, 'WARNING': 30, 'INFO': 20, 'DEBUG': 10, }
-
-logging.basicConfig(level=loglevelDict[loglevel.upper()],
-                    format='%(asctime)s [%(levelname)s] V2Board Plugin: %(message)s',
-                    datefmt='%Y/%m/%d %H:%M:%S')
+version = "v1.0.1"
+logger_format = "{time:YYYY-MM-DD HH:mm:ss} {level} v2board Plugin: {message}"
+logger.add(getCwd + '/logs/run-{time:YYYY-MM-DD}.log', format=logger_format,
+           level=loglevel, retention='15 days', rotation='50 MB', compression='zip')
 print("V2Board Plugin %s Powered by Senis" % version)
 
 # 定义api url
@@ -120,10 +118,10 @@ signal.signal(1, handle)
 # 获取远程配置信息
 fetch = get_config(getConfig_Url)
 if not fetch:
-    logging.critical('Initial loading config.json failure, Aborting start.')
+    logger.critical('Initial loading config.json failure, Aborting start.')
     exit()
 # 启动V2Ray服务
-logging.info("Starting v2ray service")
+logger.info("Starting v2ray service")
 with open(getCwd + '/config.json', 'w', encoding='UTF-8') as file:
     file.write(json.dumps(fetch))
 rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + "/config.json"])
@@ -141,7 +139,7 @@ while True:
         with open(getCwd + '/config.json', 'r', encoding='UTF-8') as file:
             current_config = str(json.loads(file.read()))
         if str(remote_config) != current_config:
-            logging.info("The config.json have been changed. Updating the local config.json.")
+            logger.info("The config.json have been changed. Updating the local config.json.")
             rc.kill()
             with open(getCwd + '/config.json', 'w', encoding='UTF-8') as file:
                 file.write(json.dumps(remote_config))
@@ -149,7 +147,7 @@ while True:
             time.sleep(5)
             add_users(users_json['data'])
     if rc.poll() is not None:
-        logging.warning("V2ray terminated abnormally, Now restarting.")
+        logger.warning("V2ray terminated abnormally, Now restarting.")
         rc = subprocess.Popen([getCwd + "/v2ray/v2ray", "-config", getCwd + '/config.json'])
         time.sleep(5)
         add_users(users_json['data'])
@@ -179,8 +177,8 @@ while True:
             v2ray_user = data['v2ray_user']
             conn.remove_user('proxy', v2ray_user['email'])
             localUserInfo.remove(data)
-            logging.info("Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
-                                                                               data['email']))
+            logger.info("Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
+                                                                              data['email']))
         add_users(addUserList)
 
     # 统计用户流量信息
@@ -200,8 +198,8 @@ while True:
                     u = conn.get_user_traffic_uplink(data['v2ray_user']['email'], reset=True)
                     d = conn.get_user_traffic_downlink(data['v2ray_user']['email'], reset=True)
             else:
-                logging.error(post_json['msg'])
+                logger.error(post_json['msg'])
         else:
-            logging.error("Cannot report user traffic info to V2Board. Please check your web server's networking.")
-    logging.info("+ {0} users, - {1} users, V2Ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
+            logger.error("Cannot report user traffic info to V2Board. Please check your web server's networking.")
+    logger.info("+ {0} users, - {1} users, v2ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
     time.sleep(checkRate)
