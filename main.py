@@ -40,7 +40,7 @@ def get_config(urls):
             config = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as f:
-            logger.warning(f.args[0].reason)
+            logger.warning(f.args[0])
             time.sleep(5)
             n += 1
     if config and config.status_code == 200:
@@ -73,7 +73,7 @@ def get_user_info(urls):
             users = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as e:
-            logger.warning(e.args[0].reason)
+            logger.warning(e.args[0])
             i += 1
             time.sleep(5)
     if users.status_code == 200:
@@ -102,8 +102,8 @@ loglevel = str(configs['loglevel']).upper()
 localIP = "127.0.0.1"
 version = "v1.0.1"
 logger_format = "{time:YYYY-MM-DD HH:mm:ss} {level} v2board Plugin: {message}"
-logger.add(getCwd + '/logs/logs-{time:YYYY-MM-DD}.log', format=logger_format,
-           level=loglevel, retention='15 days', rotation='50 MB', compression='zip')
+logger.add(getCwd + '/logs/v2board_Plugin.log', format=logger_format,
+           level=loglevel, retention='7 days', rotation='50 MB', compression='zip')
 print("V2Board Plugin %s Powered by Senis" % version)
 
 # 定义api url
