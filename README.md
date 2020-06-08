@@ -20,7 +20,7 @@
 1. 增加执行权限
 
    ```bash
-   chmod +x main.py v2ray -R
+   chmod +x main.py v2ray/v2*
    ```
    
 2. 修改cfg.json中的内容
