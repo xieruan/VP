@@ -53,6 +53,8 @@ def get_config(urls):
         else:
             logger.error("Fetching remote config.json failure. Please check your web server's networking.")
             return None
+    else:
+        return None
 
 
 def add_users(user_list):
