@@ -43,15 +43,16 @@ def get_config(urls):
             logger.warning(f.args[0])
             time.sleep(5)
             n += 1
-    if config and config.status_code == 200:
-        config_dict = json.loads(config.text)
-        return config_dict
-    elif config.status_code <= 500:
-        logger.error(json.loads(config.text)['message'])
-        return None
-    else:
-        logger.error("Fetching remote config.json failure. Please check your web server's networking.")
-        return None
+    if config:
+        if config.status_code == 200:
+            config_dict = json.loads(config.text)
+            return config_dict
+        elif config.status_code <= 500:
+            logger.error(json.loads(config.text)['message'])
+            return None
+        else:
+            logger.error("Fetching remote config.json failure. Please check your web server's networking.")
+            return None
 
 
 def add_users(user_list):
@@ -76,13 +77,14 @@ def get_user_info(urls):
             logger.warning(e.args[0])
             i += 1
             time.sleep(5)
-    if users.status_code == 200:
-        users_info = users.json()
-        if users_info['msg'] != "ok":
-            logger.critical(users_info['msg'])
-            return None
-        else:
-            return users_info
+    if users:
+        if users.status_code == 200:
+            users_info = users.json()
+            if users_info['msg'] != "ok":
+                logger.critical(users_info['msg'])
+                return None
+            else:
+                return users_info
     else:
         return None
 
