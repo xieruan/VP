@@ -34,15 +34,15 @@ def handle(sig, frame):
 def get_config(urls):
     # config info
     config = None
-    n = 0
-    while n < 3:
+    i = 0
+    while i < 3:
         try:
             config = requests.get(urls)
             break
         except requests.exceptions.ConnectionError as f:
             logger.warning(f.args[0])
             time.sleep(5)
-            n += 1
+            i += 1
     if config:
         if config.status_code == 200:
             config_dict = json.loads(config.text)
@@ -75,8 +75,8 @@ def get_user_info(urls):
         try:
             users = requests.get(urls)
             break
-        except requests.exceptions.ConnectionError as e:
-            logger.warning(e.args[0])
+        except requests.exceptions.ConnectionError as f:
+            logger.warning(f.args[0])
             i += 1
             time.sleep(5)
     if users:
@@ -194,16 +194,26 @@ while True:
         if u or d:
             traffic.append({'user_id': data['id'], 'u': u, 'd': d})
     if traffic:
-        post = requests.post(submit_Url, json=traffic)
-        if post.status_code == 200:
-            post_json = post.json()
-            if post_json['msg'] == 'ok':
-                for data in localUserInfo:
-                    u = conn.get_user_traffic_uplink(data['v2ray_user']['email'], reset=True)
-                    d = conn.get_user_traffic_downlink(data['v2ray_user']['email'], reset=True)
+        n = 0
+        post = None
+        while n < 3:
+            try:
+                post = requests.post(submit_Url, json=traffic)
+                break
+            except requests.exceptions.ConnectionError as e:
+                logger.warning(e.args[0])
+                time.sleep(5)
+                n += 1
+        if post:
+            if post.status_code == 200:
+                post_json = post.json()
+                if post_json['msg'] == 'ok':
+                    for data in localUserInfo:
+                        u = conn.get_user_traffic_uplink(data['v2ray_user']['email'], reset=True)
+                        d = conn.get_user_traffic_downlink(data['v2ray_user']['email'], reset=True)
+                else:
+                    logger.error(post_json['msg'])
             else:
-                logger.error(post_json['msg'])
-        else:
-            logger.error("Cannot report user traffic info to V2Board. Please check your web server's networking.")
+                logger.error("Cannot report user traffic info to V2Board. Please check your web server's networking.")
     logger.info("+ {0} users, - {1} users, v2ray PID = {2}".format(len(addUserList), len(delUserList), rc.pid))
     time.sleep(checkRate)
