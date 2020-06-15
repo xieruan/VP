@@ -39,8 +39,12 @@ def get_config(urls):
         try:
             config = requests.get(urls)
             break
-        except requests.exceptions as f:
-            logger.warning(f.args[0])
+        except requests.exceptions.ConnectionError as f_config:
+            logger.warning(f_config.args[0])
+            time.sleep(5)
+            i += 1
+        except requests.exceptions.ChunkedEncodingError as f_config:
+            logger.warning(f_config.args[0])
             time.sleep(5)
             i += 1
     if config:
@@ -75,10 +79,14 @@ def get_user_info(urls):
         try:
             users = requests.get(urls)
             break
-        except requests.exceptions as f:
-            logger.warning(f.args[0])
+        except requests.exceptions.ConnectionError as f_user:
+            logger.warning(f_user.args[0])
             i += 1
             time.sleep(5)
+        except requests.exceptions.ChunkedEncodingError as f_user:
+            logger.warning(f_user.args[0])
+            time.sleep(5)
+            i += 1
     if users:
         if users.status_code == 200:
             users_info = users.json()
@@ -200,8 +208,12 @@ while True:
             try:
                 post = requests.post(submit_Url, json=traffic)
                 break
-            except requests.exceptions as e:
+            except requests.exceptions.ConnectionError as e:
                 logger.warning(e.args[0])
+                time.sleep(5)
+                n += 1
+            except requests.exceptions.ChunkedEncodingError as f:
+                logger.warning(f.args[0])
                 time.sleep(5)
                 n += 1
         if post:
