@@ -39,7 +39,7 @@ def get_config(urls):
         try:
             config = requests.get(urls)
             break
-        except requests.exceptions.ConnectionError as f:
+        except requests.exceptions as f:
             logger.warning(f.args[0])
             time.sleep(5)
             i += 1
@@ -75,7 +75,7 @@ def get_user_info(urls):
         try:
             users = requests.get(urls)
             break
-        except requests.exceptions.ConnectionError as f:
+        except requests.exceptions as f:
             logger.warning(f.args[0])
             i += 1
             time.sleep(5)
@@ -200,7 +200,7 @@ while True:
             try:
                 post = requests.post(submit_Url, json=traffic)
                 break
-            except requests.exceptions.ConnectionError as e:
+            except requests.exceptions as e:
                 logger.warning(e.args[0])
                 time.sleep(5)
                 n += 1
