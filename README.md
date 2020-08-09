@@ -5,7 +5,7 @@
 1. 下载
 
    ```bash
-   git clone https://github.com/xieruan/VP.git
+   git clone https://github.com/xieruan/vp.git
    ```
 
 2. 安装依赖
