@@ -112,11 +112,11 @@ loglevel = str(configs['loglevel']).upper()
 
 # 定义静态变量
 localIP = "127.0.0.1"
-version = "v1.0.1"
+version = "v1.0.2"
 logger_format = "{time:YYYY-MM-DD HH:mm:ss} {level} v2board Plugin: {message}"
 logger.add(getCwd + '/logs/v2board_Plugin.log', format=logger_format,
            level=loglevel, retention='7 days', rotation='50 MB', compression='zip')
-logger.critical("V2Board Plugin %s Powered by Senis" % version)
+logger.critical("V2Board Plugin %s Powered by xieruan" % version)
 
 # 定义api url
 getConfig_Url = '{0}/api/v1/server/deepbwork/config?local_port={1}&node_id={2}&token={3}'. \
