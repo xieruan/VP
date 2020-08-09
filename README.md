@@ -5,7 +5,7 @@
 1. 下载
 
    ```bash
-   git clone https://github.com/thank243/v2board-Plugin.git
+   git clone https://github.com/xieruan/v2bp.git
    ```
 
 2. 安装依赖
