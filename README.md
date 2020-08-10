@@ -1,7 +1,7 @@
 ## V2Ray Plugin For V2Board
 
 ### 安装
-
+#### 环境需先安装python3 不想麻烦的请到docker版https://github.com/xieruan/vp-docker
 1. 下载
 
    ```bash
