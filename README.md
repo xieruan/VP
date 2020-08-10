@@ -1,8 +1,7 @@
 ## V2Ray Plugin For V2Board
 
 ### 安装
-#### 环境需先安装python3 不想折腾的请到docker版 <a href="https://github.com/xieruan/vp-docker" 传送门 </a>
-<a class="subtitle" href="https://github.com/yichengchen/clashX/releases" target="_blank">ClashX</a>
+#### 环境需先安装python3 不想折腾的请到docker版 <a href="https://github.com/xieruan/vp-docker" > 传送门 </a>
 1. 下载
 
    ```bash
