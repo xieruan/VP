@@ -67,8 +67,8 @@ def add_users(user_list):
         conn.add_user('proxy', UUID(user['uuid']).hex, user['email'], user['level'],
                       user['alter_id'])
         localUserInfo.append(usr)
-        logger.info("Added user: ID={0}, VmessID={1}, Email={2}".format(usr['id'], user['uuid'],
-                                                                        usr['email']))
+        logger.info("Added user: ID={0}, VmessID={1}, Email={2}@v2board.user".format(usr['id'], user['uuid'],
+                                                                        user['uuid']))
     return
 
 
@@ -190,7 +190,7 @@ while True:
             conn.remove_user('proxy', v2ray_user['email'])
             localUserInfo.remove(data)
             logger.info("Removed user: ID={0}, VmessID={1}, Email={2}".format(data['id'], v2ray_user['uuid'],
-                                                                              data['email']))
+                                                                              v2ray_user['email']))
         add_users(addUserList)
 
     # 统计用户流量信息
